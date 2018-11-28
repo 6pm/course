@@ -1,28 +1,31 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Home from './pages/Home';
+import About from './pages/About';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+import NotExists from './pages/NotExists';
+import EmailSpam from './pages/EmailSpam';
+
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <div>
+        {/* кастомна адреса */}
+        <Route
+          path="/user/:name"
+          component={EmailSpam}
+        />
+
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/about" component={About} />
+
+          {/* як створити 404 сторінку */}
+          <Route component={NotExists} />
+        </Switch>
       </div>
-    );
-  }
+    </BrowserRouter>
+  );
 }
 
-export default App;
