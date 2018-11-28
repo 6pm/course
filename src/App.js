@@ -7,9 +7,13 @@ import NotExists from './pages/NotExists';
 import EmailSpam from './pages/EmailSpam';
 
 // redux
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import createSagaMiddleware from 'redux-saga'
 import { Provider } from 'react-redux'
 import rootReducer from './reducers'
+
+// saga
+import sagas from './sagas/index'
 
 
 function Routes() {
@@ -34,11 +38,17 @@ function Routes() {
   );
 }
 
+// saga
+const sagaMiddleware = createSagaMiddleware()
 // redux
 const store = createStore(
   rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  applyMiddleware(sagaMiddleware),
+  // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
+
+// then run the saga
+sagaMiddleware.run(sagas)
 
 const App = () => (
   <Provider store={store}>
