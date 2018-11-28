@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent, Component } from 'react';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import { changeText } from './../actions/header';
+
+import { createSelector } from 'reselect'
 
 const Menu = ({ someText, changeText }) => (
     <nav>
@@ -16,29 +18,38 @@ const Menu = ({ someText, changeText }) => (
 
 export default Menu;
 
-const mapStateToProps = state => ({
-    someText: state.header.someText,
-})
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    changeText: (activePage) => dispatch(
-        changeText(activePage)
-    ),
-})
-
-
+// ---------
 
 class Form extends Component {
-
     state = {
-        input: ''
+        input: '',
+        array: ['item'],
+    }
+
+    setText = () => {
+        const { changeText } = this.props
+
+        changeText(this.state.input)
+        this.setState({ input: '' })
+    }
+
+    checkArray = () => {
+        this.setState({ array: this.state.array })
+    }
+
+    checkObject = () => {
+        const { changeText } = this.props
+
+        changeText('render')
     }
 
     render() {
-        const { someText, changeText } = this.props
+        const { form } = this.props
+        console.log('render');
 
         return (
             <div>
-                <h3>{someText}</h3>
+                <h3>{form.someText}</h3>
                 <input
                     value={this.state.input}
                     onChange={(e) => {
@@ -47,14 +58,31 @@ class Form extends Component {
                         })
                     }}
                 />
-                <button onClick={() => {
-                    changeText(this.state.input)
-                    this.setState({ input: '' })
-                }}>Save</button>
+                <button onClick={this.setText} disabled={!this.state.input}>Save</button>
+
+                <button onClick={this.checkArray}>array</button>
+
+                <button onClick={this.checkObject}>call action</button>
             </div>
         )
     }
 }
+
+const mapStateToProps = state => ({
+    // form: state.header.form,
+    form: formSelector(state),
+})
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    changeText: (activePage) => dispatch(
+        changeText(activePage)
+    ),
+})
+
+const form = state => state.header.form.someText;
+const formSelector = createSelector(
+    form,
+    someText => ({ someText })
+)
 
 const FormContainer = connect(
     mapStateToProps,

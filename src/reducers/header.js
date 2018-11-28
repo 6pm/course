@@ -1,5 +1,7 @@
 const initialState = {
-	someText: 'header text',
+	form: {
+		someText: 'header text',
+	},
 	test: 1,
 }
 
@@ -9,7 +11,9 @@ const todos = (state = initialState, action) => {
 		case 'CHANGE_TEXT':
 			return {
 				...state,
-				someText: action.someText,
+				form: {
+					someText: action.someText,
+				},
 			}
 
 		default:
