@@ -6,8 +6,13 @@ import About from './pages/About';
 import NotExists from './pages/NotExists';
 import EmailSpam from './pages/EmailSpam';
 
+// redux
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import rootReducer from './reducers'
 
-export default function App() {
+
+function Routes() {
   return (
     <BrowserRouter>
       <div>
@@ -28,4 +33,17 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
+// redux
+const store = createStore(
+  rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
+
+const App = () => (
+  <Provider store={store}>
+    <Routes />
+  </Provider>
+)
+export default App
 
