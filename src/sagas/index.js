@@ -2,13 +2,12 @@ import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 
 const getAnswer = (flag) => fetch(`https://yesno.wtf/api?force=${flag}`, { method: 'GET' });
 
-// worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* fetchAnswer(action) {
     try {
         // те саме що getAnswer(action.flag)
         const user = yield call(getAnswer, action.flag);
+        const maybe = yield call(getAnswer, 'maybe');
         debugger
-        // викличе екшен
         yield put({ type: "ANSWER_SUCCESS", user: user });
     } catch (e) {
         yield put({ type: "ANSWER_FAILED", message: e.message });
